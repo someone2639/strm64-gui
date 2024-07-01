@@ -10,5 +10,5 @@ clean:
 	rm -rf build
 
 export:
-	cp -R build/GDExtensionTemplate/* ../strm64-gui/demo/bin/
+	cp -R build/GDExtensionTemplate/* project/demo/bin/
 

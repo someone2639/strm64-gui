@@ -1,0 +1,25 @@
+[gd_scene load_steps=2 format=3 uid="uid://cxr2ml63b6ngq"]
+
+[ext_resource type="Script" path="res://onoff_entry.gd" id="1_85w0y"]
+
+[node name="onoff_root" type="HBoxContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+tooltip_text = "does this thing work"
+script = ExtResource("1_85w0y")
+
+[node name="option_name" type="Label" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+
+[node name="option_state" type="CheckButton" parent="."]
+layout_mode = 2
+size_flags_horizontal = 10
+tooltip_text = "placeholder
+"
+
+[connection signal="tree_entered" from="option_name" to="." method="_on_option_name_tree_entered"]
