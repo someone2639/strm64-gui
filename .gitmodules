@@ -3,7 +3,7 @@
 	url = https://github.com/godotengine/godot-cpp.git
 [submodule "STRM64"]
 	path = STRM64
-	url = https://github.com/gheskett/STRM64
+	url = https://github.com/someone2639/STRM64
 [submodule "vgmstream"]
 	path = vgmstream
 	url = https://github.com/vgmstream/vgmstream/
