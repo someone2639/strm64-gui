@@ -89,6 +89,10 @@ include( CompilerWarnings )
 include( GitVersionInfo )
 
 add_subdirectory( src )
+add_subdirectory( STRM64 )
+set(BUILD_STATIC ON)
+set(CMAKE_BUILD_TYPE Debug)
+add_subdirectory( vgmstream )
 
 # Install library, extension file, and support files in ${CMAKE_INSTALL_PREFIX}/${PROJECT_NAME}
 set( INSTALL_DIR "${CMAKE_INSTALL_PREFIX}/${PROJECT_NAME}/" )
@@ -128,6 +132,7 @@ if ( NOT EXISTS "${CMAKE_CURRENT_LIST_DIR}/extern/godot-cpp/Makefile" )
 endif()
 
 set( GODOT_CPP_SYSTEM_HEADERS ON CACHE BOOL "" FORCE )
+set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -I../STRM64/library/vgmstream/include -I../STRM64/include -O0 -g -ggdb3")
 
 add_subdirectory( extern/godot-cpp )
 
@@ -139,4 +144,7 @@ set_target_properties( godot-cpp
 target_link_libraries( ${PROJECT_NAME}
     PRIVATE
         godot-cpp
+        swresample
+        STRM64
+        # vgmstream
 )

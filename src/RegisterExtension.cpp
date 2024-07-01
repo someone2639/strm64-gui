@@ -7,7 +7,8 @@
 #include "godot_cpp/godot.hpp"
 
 #include "Example.h"
-#include "GDExtensionTemplate.h"
+#include "strm64.h"
+// #include "GDExtensionTemplate.h"
 
 /// @file
 /// Register our classes with Godot.
@@ -26,13 +27,7 @@ namespace
             return;
         }
 
-        godot::ClassDB::register_class<ExampleRef>();
-        godot::ClassDB::register_class<ExampleMin>();
-        godot::ClassDB::register_class<Example>();
-        godot::ClassDB::register_class<ExampleVirtual>( true );
-        godot::ClassDB::register_abstract_class<ExampleAbstract>();
-
-        godot::ClassDB::register_class<GDExtensionTemplate>();
+        godot::ClassDB::register_class<STRM64>();
     }
 
     /// @brief Called by Godot to let us do any cleanup.
