@@ -10,5 +10,5 @@ clean:
 	rm -rf build
 
 export:
-	cp -R build/GDExtensionTemplate/* project/demo/bin/
+	cp -R build/GDExtensionTemplate/* project/bin/
 

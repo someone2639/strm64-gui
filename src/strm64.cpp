@@ -15,46 +15,24 @@ using namespace godot;
 
 STRM64::~STRM64() { }
 
+string NewString(const String s) {
+    CharString buf = s.utf8();
+
+    return string(buf.get_data());
+}
+
 void STRM64::_bind_methods()
 {
-    ClassDB::bind_method(D_METHOD("run"), &STRM64::run);
     ClassDB::bind_method(D_METHOD("generate_filename"), &STRM64::generate_filename);
+    ClassDB::bind_method(D_METHOD("set_input_file", "p_filename"), &STRM64::set_filename);
+    ClassDB::bind_method(D_METHOD("set_output_file", "p_output"), &STRM64::set_output);
+    ClassDB::bind_method(D_METHOD("set_mix_to_mono", "b"), &STRM64::set_mono);
+    ClassDB::bind_method(D_METHOD("set_generate_stream", "b"), &STRM64::set_stream);
+    ClassDB::bind_method(D_METHOD("set_generate_sequence", "b"), &STRM64::set_seq);
+    ClassDB::bind_method(D_METHOD("set_generate_soundbank", "b"), &STRM64::set_bank);
 
-    ADD_PROPERTY(
-        PropertyInfo(Variant::STRING, "filename", PROPERTY_HINT_RANGE, "0,20,0.01"),
-        "set_filename",
-        "get_filename"
-    );
 
-    ADD_PROPERTY(
-        PropertyInfo(Variant::BOOL, "forced_mono"),
-        "set_mono",
-        "get_mono"
-    );
-
-    ADD_PROPERTY(
-        PropertyInfo(Variant::BOOL, "gen_stream"),
-        "set_stream",
-        "get_stream"
-    );
-
-    ADD_PROPERTY(
-        PropertyInfo(Variant::BOOL, "gen_sequence"),
-        "set_seq",
-        "get_seq"
-    );
-
-    ADD_PROPERTY(
-        PropertyInfo(Variant::BOOL, "gen_soundbank"),
-        "set_bank",
-        "get_bank"
-    );
-
-    ADD_PROPERTY(
-        PropertyInfo(Variant::STRING, "output_filename", PROPERTY_HINT_RANGE, "0,20,0.01"),
-        "set_output",
-        "get_output"
-    );
+    ClassDB::bind_method(D_METHOD("run"), &STRM64::run);
 }
 
 
@@ -95,8 +73,8 @@ int STRM64::get_vgmstream_properties(const char *inFilename) {
     return RETURN_SUCCESS;
 }
 
-void STRM64::set_filename(string &s) {
-    this->filename = s;
+void STRM64::set_filename(String p_filename) {
+    this->filename = NewString(p_filename);
     this->inFileProperties = init_vgmstream(this->filename.c_str());
     int ret = get_vgmstream_properties(this->filename.c_str());
     if (ret) {
@@ -141,26 +119,15 @@ void STRM64::generate_filename() {
     this->newFilename = strip_extension(this->newFilename);
 }
 
-string STRM64::get_filename() const {return this->filename;};
-void STRM64::set_filename(string &s);
+void STRM64::set_output(String p_output) {this->newFilename = NewString(p_output);}
 
-string STRM64::get_output() const {return this->newFilename;};
-void STRM64::set_output(string &s) {this->newFilename = s;};
-
-bool STRM64::get_mono() const {return this->forcedMono;};
-void STRM64::set_mono(bool b) {this->forcedMono = b;};
-
-bool STRM64::get_stream() const {return this->generateStreams;};
-void STRM64::set_stream(bool b) {this->generateStreams = b;};
-
-bool STRM64::get_seq() const {return this->generateSequence;};
-void STRM64::set_seq(bool b) {this->generateSequence = b;};
-
-bool STRM64::get_bank() const {return this->generateSoundbank;};
-void STRM64::set_bank(bool b) {this->generateSoundbank = b;};
+void STRM64::set_mono(bool b) {this->forcedMono = b;}
+void STRM64::set_stream(bool b) {this->generateStreams = b;}
+void STRM64::set_seq(bool b) {this->generateSequence = b;}
+void STRM64::set_bank(bool b) {this->generateSoundbank = b;}
 
 void STRM64::test() {
-    set_filename("/home/faris/")
+    // set_filename("/home/faris/")
 }
 
 STRM64::STRM64() {

@@ -35,6 +35,8 @@ private:
     uint8_t channelCountOverride = 0;
     string duplicateStringName = "";
 
+    string GDStringConvert(String s);
+
 protected:
     static void _bind_methods();
 
@@ -44,23 +46,19 @@ public:
 
     void run();
 
-    string get_filename() const;
-    void set_filename(string &s);
+    void set_filename(String p_filename);
 
-    string get_output() const;
-    void set_output(string &s);
+    void set_output(String p_output);
 
-    bool get_mono() const;
     void set_mono(bool b);
-
-    bool get_stream() const;
     void set_stream(bool b);
-
-    bool get_seq() const;
     void set_seq(bool b);
-
-    bool get_bank() const;
     void set_bank(bool b);
+
+    // bool get_mono() const;
+    // bool get_stream() const;
+    // bool get_seq() const;
+    // bool get_bank() const;
 
     void generate_filename();
 
