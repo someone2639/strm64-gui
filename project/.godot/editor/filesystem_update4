@@ -1,5 +1,7 @@
 res://mainpage.tscn
-res://fileselect.tscn
+res://UI_Entries/fileselect/fileselect.tscn
 res://onoff_value_entry.tscn
 res://value_entry.tscn
 res://onoff_entry.tscn
+res://mainpage.gd
+res://UI_Entries/fileselect/fileselect.gd

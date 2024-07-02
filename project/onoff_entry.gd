@@ -1,4 +1,4 @@
-extends Node
+extends Entry
 
 @export var optname : String
 @export var state : bool

@@ -14,3 +14,8 @@ config/name="STRM64 GUI"
 run/main_scene="res://mainpage.tscn"
 config/features=PackedStringArray("4.2", "Forward Plus")
 config/icon="res://icon.svg"
+
+[autoload]
+
+GStrm64="*res://gSTRM64.gd"
+Entry="*res://UI_Entries/Entry.gd"

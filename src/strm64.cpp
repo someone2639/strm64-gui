@@ -13,7 +13,8 @@
 
 using namespace godot;
 
-STRM64::~STRM64() { }
+STRM64::~STRM64() {
+}
 
 string NewString(const String s) {
     CharString buf = s.utf8();
@@ -30,7 +31,6 @@ void STRM64::_bind_methods()
     ClassDB::bind_method(D_METHOD("set_generate_stream", "b"), &STRM64::set_stream);
     ClassDB::bind_method(D_METHOD("set_generate_sequence", "b"), &STRM64::set_seq);
     ClassDB::bind_method(D_METHOD("set_generate_soundbank", "b"), &STRM64::set_bank);
-
 
     ClassDB::bind_method(D_METHOD("run"), &STRM64::run);
 }
@@ -78,6 +78,7 @@ void STRM64::set_filename(String p_filename) {
     this->inFileProperties = init_vgmstream(this->filename.c_str());
     int ret = get_vgmstream_properties(this->filename.c_str());
     if (ret) {
+        printf("ERROR: %d\n", ret);
         // TODO: actually find out how to make this send an error back to godot
     }
 }
@@ -86,6 +87,7 @@ void STRM64::run() {
     int ret;
 
     if (this->inFileProperties) {
+        printf("Writing to %s........\n", this->newFilename.c_str());
         ret = generate_new_streams(this->inFileProperties, newFilename, this->filename.c_str(), this->generateStreams);
 
         // TODO: decide whether to communicate this to godot (and how)
@@ -115,7 +117,7 @@ void STRM64::run() {
 extern string replace_spaces(string);
 extern string strip_extension(string);
 void STRM64::generate_filename() {
-    this->newFilename = replace_spaces(this->newFilename);
+    this->newFilename = replace_spaces(this->filename);
     this->newFilename = strip_extension(this->newFilename);
 }
 
@@ -131,6 +133,7 @@ void STRM64::test() {
 }
 
 STRM64::STRM64() {
+    this->error = 0;
     this->inFileProperties = nullptr;
 }
 

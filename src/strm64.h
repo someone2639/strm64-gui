@@ -37,6 +37,8 @@ private:
 
     string GDStringConvert(String s);
 
+    int error;
+
 protected:
     static void _bind_methods();
 

@@ -3,8 +3,9 @@ extends Node
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	var s = STRM64.new()
-	s.run()
+	GStrm64.handle.set_input_file("anime")
+	GStrm64.handle.set_output_file("games")
+	GStrm64.handle.run()
 	#var t = GDExtensionTemplate.new()
 	#s.filename = "test"
 	#s.add(10)

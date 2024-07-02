@@ -2,6 +2,12 @@
 entry_symbol = "GDExtensionInit"
 compatibility_minimum = 4.1
 
+[dependencies]
+linux.debug.x86_64 = {
+    "lib/Linux-x86_64/vgstream.so": "",
+    "lib/Linux-x86_64/libstrm64.so": ""
+}
+
 [icons]
 Example = "icons/Example.svg"
 
