@@ -31,6 +31,8 @@ private:
     bool generateSoundbank = true;
     bool printedHelp = false;
 
+    bool enable_loop = false;
+
     bool forcedMono = false;
     uint8_t channelCountOverride = 0;
     string duplicateStringName = "";

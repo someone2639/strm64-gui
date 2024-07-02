@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://lqa1inwt85w1"]
+[gd_scene load_steps=7 format=3 uid="uid://lqa1inwt85w1"]
 
-[ext_resource type="PackedScene" uid="uid://b1v8d6w0nfjhh" path="res://UI_Entries/fileselect/fileselect.tscn" id="1_ialug"]
 [ext_resource type="Script" path="res://mainpage.gd" id="1_kbgc0"]
 [ext_resource type="PackedScene" uid="uid://cibm1xb2g30ct" path="res://onoff_value_entry.tscn" id="2_kv44q"]
 [ext_resource type="PackedScene" uid="uid://lp4oupxa8siq" path="res://value_entry.tscn" id="3_7kvot"]
 [ext_resource type="PackedScene" uid="uid://cxr2ml63b6ngq" path="res://onoff_entry.tscn" id="3_cteya"]
+[ext_resource type="Script" path="res://UI_Entries/fileselect/fileselect.gd" id="3_fa5pt"]
+[ext_resource type="Script" path="res://outputfile.gd" id="3_l2cu6"]
 
 [node name="Root" type="MarginContainer"]
 anchors_preset = 15
@@ -32,13 +33,71 @@ size_flags_vertical = 3
 [node name="entries" type="VBoxContainer" parent="layout/Content"]
 layout_mode = 2
 
-[node name="inputfile" parent="layout/Content/entries" instance=ExtResource("1_ialug")]
+[node name="inputfile" type="HBoxContainer" parent="layout/Content/entries"]
 layout_mode = 2
+script = ExtResource("3_fa5pt")
 label = "Input File"
 
-[node name="outputfile" parent="layout/Content/entries" instance=ExtResource("1_ialug")]
+[node name="epiclabel" type="Label" parent="layout/Content/entries/inputfile"]
 layout_mode = 2
-label = "Custom Output File"
+
+[node name="filename" type="LineEdit" parent="layout/Content/entries/inputfile"]
+layout_mode = 2
+size_flags_horizontal = 3
+editable = false
+
+[node name="pickfile" type="Button" parent="layout/Content/entries/inputfile"]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+size_flags_horizontal = 8
+text = "Select File..."
+
+[node name="diag" type="FileDialog" parent="layout/Content/entries/inputfile"]
+title = "Open a File"
+initial_position = 2
+ok_button_text = "Open"
+file_mode = 0
+access = 2
+use_native_dialog = true
+
+[node name="outputfile" type="HBoxContainer" parent="layout/Content/entries"]
+layout_mode = 2
+script = ExtResource("3_l2cu6")
+label = "Custom Output Location"
+
+[node name="epiclabel" type="Label" parent="layout/Content/entries/outputfile"]
+layout_mode = 2
+
+[node name="onoff" type="CheckButton" parent="layout/Content/entries/outputfile"]
+layout_mode = 2
+
+[node name="filename" type="LineEdit" parent="layout/Content/entries/outputfile"]
+layout_mode = 2
+size_flags_horizontal = 3
+editable = false
+
+[node name="pickfile" type="Button" parent="layout/Content/entries/outputfile"]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+size_flags_horizontal = 8
+text = "Select Folder..."
+
+[node name="l2" type="Label" parent="layout/Content/entries/outputfile"]
+layout_mode = 2
+text = "Sound Name"
+
+[node name="soundname" type="LineEdit" parent="layout/Content/entries/outputfile"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+placeholder_text = "sound"
+
+[node name="diag" type="FileDialog" parent="layout/Content/entries/outputfile"]
+title = "Open a Directory"
+initial_position = 2
+ok_button_text = "Select Current Folder"
+file_mode = 2
+access = 2
+use_native_dialog = true
 
 [node name="samplerate" parent="layout/Content/entries" instance=ExtResource("2_kv44q")]
 layout_mode = 2
@@ -100,4 +159,13 @@ layout_mode = 2
 size_flags_horizontal = 6
 text = "Export"
 
+[connection signal="tree_entered" from="layout/Content/entries/inputfile/epiclabel" to="layout/Content/entries/inputfile" method="_on_epiclabel_tree_entered"]
+[connection signal="pressed" from="layout/Content/entries/inputfile/pickfile" to="layout/Content/entries/inputfile" method="_on_pickfile_pressed"]
+[connection signal="file_selected" from="layout/Content/entries/inputfile/diag" to="layout/Content/entries/inputfile" method="_on_diag_file_selected"]
+[connection signal="tree_entered" from="layout/Content/entries/outputfile/epiclabel" to="layout/Content/entries/outputfile" method="_on_epiclabel_tree_entered"]
+[connection signal="toggled" from="layout/Content/entries/outputfile/onoff" to="layout/Content/entries/outputfile" method="_on_onoff_toggled"]
+[connection signal="pressed" from="layout/Content/entries/outputfile/pickfile" to="layout/Content/entries/outputfile" method="_on_pickfile_pressed"]
+[connection signal="text_changed" from="layout/Content/entries/outputfile/soundname" to="layout/Content/entries/outputfile" method="_on_soundname_text_changed"]
+[connection signal="dir_selected" from="layout/Content/entries/outputfile/diag" to="layout/Content/entries/outputfile" method="_on_diag_dir_selected"]
+[connection signal="file_selected" from="layout/Content/entries/outputfile/diag" to="layout/Content/entries/outputfile" method="_on_diag_file_selected"]
 [connection signal="pressed" from="layout/BottomBar/ExportButton" to="." method="_on_export_button_pressed"]

@@ -5,7 +5,7 @@ func _on_export_button_pressed():
 	var strm = GStrm64.handle
 
 	strm.set_input_file(get_node("layout/Content/entries/inputfile").path)
-	if len(get_node("layout/Content/entries/outputfile").path) > 0: # TODO: change to checkbox
+	if get_node("layout/Content/entries/outputfile/onoff").toggled:
 		strm.set_output_file(get_node("layout/Content/entries/outputfile").path)
 	else:
 		strm.generate_filename()
