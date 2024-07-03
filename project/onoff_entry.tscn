@@ -10,8 +10,6 @@ grow_horizontal = 2
 grow_vertical = 2
 tooltip_text = "does this thing work"
 script = ExtResource("1_85w0y")
-optname = null
-state = null
 
 [node name="option_name" type="Label" parent="."]
 layout_mode = 2
@@ -25,3 +23,4 @@ tooltip_text = "placeholder
 "
 
 [connection signal="tree_entered" from="option_name" to="." method="_on_option_name_tree_entered"]
+[connection signal="toggled" from="option_state" to="." method="_on_option_state_toggled"]

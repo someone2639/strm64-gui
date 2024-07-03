@@ -35,47 +35,9 @@ void STRM64::_bind_methods()
     ClassDB::bind_method(D_METHOD("run"), &STRM64::run);
 }
 
-
-int STRM64::get_vgmstream_properties(const char *inFilename) {
-    printf("Opening %s for reading...", inFilename);
-    fflush(stdout);
-
-    if (!this->inFileProperties) {
-        FILE *invalidFile = fopen(inFilename, "r");
-        if (invalidFile == NULL) {
-            printf("...FAILED!\nERROR: Input file cannot be found or opened!\n");
-            return RETURN_CANNOT_FIND_INPUT_FILE;
-        }
-        fclose(invalidFile);
-
-        printf("...FAILED!\nERROR: Input file is not a valid audio file!\nIf you believe this is a fluke, please make sure you have the proper audio libraries installed.\n");
-        printf("Alternatively, you can convert the input file to WAV (16-bit) separately and try again.\n");
-        return RETURN_INVALID_INPUT_FILE;
-    }
-
-    if (this->inFileProperties->channels <= 0) {
-        printf("...FAILED!\nERROR: Audio must have at least 1 channel!\nCONTAINS: %d channels\n", this->inFileProperties->channels);
-        close_vgmstream(this->inFileProperties);
-        return RETURN_NOT_ENOUGH_CHANNELS;
-    }
-
-    if (inFileProperties->channels > (int) NUM_CHANNELS_MAX) {
-        printf("...FAILED!\nERROR: Audio file exceeds maximum of %d channels!\nCONTAINS: %d channels\n", (int) NUM_CHANNELS_MAX, this->inFileProperties->channels);
-        close_vgmstream(this->inFileProperties);
-        return RETURN_TOO_MANY_CHANNELS;
-    }
-
-    // Currently using bitflags to represent channels serves no purpose, but it may be easier to automate for decomp soundbank optimization in the future.
-    this->gInstFlags = (1ULL << this->inFileProperties->channels) - 1ULL;
-
-    printf("...SUCCESS!\n");
-
-    return RETURN_SUCCESS;
-}
-
 void STRM64::set_filename(String p_filename) {
     this->filename = NewString(p_filename);
-    this->inFileProperties = init_vgmstream(this->filename.c_str());
+    inFileProperties = init_vgmstream(this->filename.c_str());
     int ret = get_vgmstream_properties(this->filename.c_str());
     if (ret) {
         printf("ERROR: %d\n", ret);
@@ -86,29 +48,30 @@ void STRM64::set_filename(String p_filename) {
 void STRM64::run() {
     int ret;
 
-    if (this->inFileProperties) {
-        printf("Writing to %s........\n", this->newFilename.c_str());
-        ret = generate_new_streams(this->inFileProperties, newFilename, this->filename.c_str(), this->generateStreams);
+    printf("Debug State: generateStreams %d genSeq %d genBank %d\n", generateStreams, generateSequence, generateSoundbank);
+
+    if (inFileProperties) {
+        ret = generate_new_streams(inFileProperties, newFilename, this->filename.c_str(), generateStreams);
 
         // TODO: decide whether to communicate this to godot (and how)
-        // if (!ret && !this->generateStreams)
-        //     print_seq_channels(this->gInstFlags);
+        if (!ret && !generateStreams)
+            print_seq_channels(gInstFlags);
 
         if (generateSequence) {
             if (!ret)
-                ret = generate_new_sequence(newFilename, this->gInstFlags);
+                ret = generate_new_sequence(newFilename, gInstFlags);
             else
-                generate_new_sequence(newFilename, this->gInstFlags);
+                generate_new_sequence(newFilename, gInstFlags);
         }
 
         if (generateSoundbank) {
             if (!ret)
-                ret = generate_new_soundbank(newFilename, this->gInstFlags);
+                ret = generate_new_soundbank(newFilename, gInstFlags);
             else
-                generate_new_soundbank(newFilename, this->gInstFlags);
+                generate_new_soundbank(newFilename, gInstFlags);
         }
-        close_vgmstream(this->inFileProperties);
-        this->inFileProperties = nullptr;
+        close_vgmstream(inFileProperties);
+        inFileProperties = nullptr;
     } else {
         // do nothing... (since the user has no control over this)
     }
@@ -123,17 +86,24 @@ void STRM64::generate_filename() {
 
 void STRM64::set_output(String p_output) {this->newFilename = NewString(p_output);}
 
-void STRM64::set_mono(bool b) {this->forcedMono = b;}
-void STRM64::set_stream(bool b) {this->generateStreams = b;}
-void STRM64::set_seq(bool b) {this->generateSequence = b;}
-void STRM64::set_bank(bool b) {this->generateSoundbank = b;}
-
-void STRM64::test() {
-    // set_filename("/home/faris/")
+void STRM64::set_mono(bool b) {
+    printf("SETTING MONO: %d\n", b);
+    forcedMono = b;
+}
+void STRM64::set_stream(bool b) {
+    printf("SETTING STREAM: %d\n", b);
+    generateStreams = b;
+}
+void STRM64::set_seq(bool b) {
+    printf("SETTING SEQ: %d\n", b);
+    generateSequence = b;
+}
+void STRM64::set_bank(bool b) {
+    printf("SETTING BANK: %d\n", b);
+    generateSoundbank = b;
 }
 
 STRM64::STRM64() {
-    this->error = 0;
-    this->inFileProperties = nullptr;
+    inFileProperties = nullptr;
 }
 

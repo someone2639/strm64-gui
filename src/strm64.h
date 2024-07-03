@@ -14,6 +14,19 @@ extern "C" {
 #include "vgmstream.h"
 }
 
+extern bool customNewFilename;
+extern bool generateStreams;
+extern bool generateSequence;
+extern bool generateSoundbank;
+extern bool printedHelp;
+extern bool forcedMono;
+extern uint16_t gInstFlags;
+extern VGMSTREAM *inFileProperties;
+extern uint8_t channelCountOverride;
+
+extern void print_seq_channels(uint16_t instFlags);
+extern int get_vgmstream_properties(const char *inFilename);
+
 using namespace godot;
 using namespace std;
 
@@ -24,22 +37,6 @@ class STRM64 : public RefCounted
 private:
     string filename; // input
     string newFilename; // output
-    VGMSTREAM *inFileProperties;
-    uint16_t gInstFlags;
-    bool generateStreams = true;
-    bool generateSequence = true;
-    bool generateSoundbank = true;
-    bool printedHelp = false;
-
-    bool enable_loop = false;
-
-    bool forcedMono = false;
-    uint8_t channelCountOverride = 0;
-    string duplicateStringName = "";
-
-    string GDStringConvert(String s);
-
-    int error;
 
 protected:
     static void _bind_methods();
@@ -59,16 +56,7 @@ public:
     void set_seq(bool b);
     void set_bank(bool b);
 
-    // bool get_mono() const;
-    // bool get_stream() const;
-    // bool get_seq() const;
-    // bool get_bank() const;
-
     void generate_filename();
-
-    void test();
-
-    int get_vgmstream_properties(const char *inFilename);
 };
 
 #endif // STRM64_CLASS_H
