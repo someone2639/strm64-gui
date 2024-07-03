@@ -6,7 +6,6 @@ target_sources( ${PROJECT_NAME}
         # Example.cpp
         # GDExtensionTemplate.h
         # GDExtensionTemplate.cpp
-        util.cpp
         strm64.cpp
         RegisterExtension.cpp
 )
