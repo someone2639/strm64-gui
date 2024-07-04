@@ -19,3 +19,4 @@ config/icon="res://icon.svg"
 
 GStrm64="*res://gSTRM64.gd"
 Entry="*res://UI_Entries/Entry.gd"
+MathUtil="*res://math_util.gd"

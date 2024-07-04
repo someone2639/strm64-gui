@@ -12,3 +12,5 @@ clean:
 export:
 	cp -R build/GDExtensionTemplate/* project/bin/
 
+test:
+	godot project/project.godot

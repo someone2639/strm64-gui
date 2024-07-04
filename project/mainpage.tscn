@@ -1,11 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://lqa1inwt85w1"]
+[gd_scene load_steps=4 format=3 uid="uid://lqa1inwt85w1"]
 
 [ext_resource type="Script" path="res://mainpage.gd" id="1_kbgc0"]
-[ext_resource type="PackedScene" uid="uid://cibm1xb2g30ct" path="res://onoff_value_entry.tscn" id="2_kv44q"]
-[ext_resource type="PackedScene" uid="uid://lp4oupxa8siq" path="res://value_entry.tscn" id="3_7kvot"]
-[ext_resource type="PackedScene" uid="uid://cxr2ml63b6ngq" path="res://onoff_entry.tscn" id="3_cteya"]
-[ext_resource type="Script" path="res://UI_Entries/fileselect/fileselect.gd" id="3_fa5pt"]
-[ext_resource type="Script" path="res://outputfile.gd" id="3_l2cu6"]
+[ext_resource type="Script" path="res://waveform.gd" id="2_4t313"]
+
+[sub_resource type="CanvasTexture" id="CanvasTexture_44luu"]
 
 [node name="Root" type="MarginContainer"]
 anchors_preset = 15
@@ -22,6 +20,26 @@ script = ExtResource("1_kbgc0")
 [node name="layout" type="VBoxContainer" parent="."]
 layout_mode = 2
 
+[node name="file_dialog" type="FileDialog" parent="layout"]
+mode = 2
+title = "Open a File"
+initial_position = 2
+size = Vector2i(506, 159)
+ok_button_text = "Open"
+file_mode = 0
+access = 2
+use_native_dialog = true
+
+[node name="folder_dialog" type="FileDialog" parent="layout"]
+mode = 2
+title = "Open a Directory"
+initial_position = 2
+size = Vector2i(623, 159)
+ok_button_text = "Select Current Folder"
+file_mode = 2
+access = 2
+use_native_dialog = true
+
 [node name="TopBar" type="HBoxContainer" parent="layout"]
 custom_minimum_size = Vector2(0, 36)
 layout_mode = 2
@@ -35,11 +53,10 @@ layout_mode = 2
 
 [node name="inputfile" type="HBoxContainer" parent="layout/Content/entries"]
 layout_mode = 2
-script = ExtResource("3_fa5pt")
-label = "Input File"
 
 [node name="epiclabel" type="Label" parent="layout/Content/entries/inputfile"]
 layout_mode = 2
+text = "Input File"
 
 [node name="filename" type="LineEdit" parent="layout/Content/entries/inputfile"]
 layout_mode = 2
@@ -52,21 +69,12 @@ layout_mode = 2
 size_flags_horizontal = 8
 text = "Select File..."
 
-[node name="diag" type="FileDialog" parent="layout/Content/entries/inputfile"]
-title = "Open a File"
-initial_position = 2
-ok_button_text = "Open"
-file_mode = 0
-access = 2
-use_native_dialog = true
-
 [node name="outputfile" type="HBoxContainer" parent="layout/Content/entries"]
 layout_mode = 2
-script = ExtResource("3_l2cu6")
-label = "Custom Output Location"
 
 [node name="epiclabel" type="Label" parent="layout/Content/entries/outputfile"]
 layout_mode = 2
+text = "Output Folder"
 
 [node name="onoff" type="CheckButton" parent="layout/Content/entries/outputfile"]
 layout_mode = 2
@@ -91,62 +99,238 @@ custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 placeholder_text = "sound"
 
-[node name="diag" type="FileDialog" parent="layout/Content/entries/outputfile"]
-title = "Open a Directory"
-initial_position = 2
-ok_button_text = "Select Current Folder"
-file_mode = 2
-access = 2
-use_native_dialog = true
-
-[node name="samplerate" parent="layout/Content/entries" instance=ExtResource("2_kv44q")]
+[node name="samplerate" type="HBoxContainer" parent="layout/Content/entries"]
 layout_mode = 2
-optname = "Custom Sample Rate"
 
-[node name="resamplerate" parent="layout/Content/entries" instance=ExtResource("2_kv44q")]
+[node name="option_name" type="Label" parent="layout/Content/entries/samplerate"]
 layout_mode = 2
-optname = "Custom Resample Rate"
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "Custom Sample Rate"
 
-[node name="enable_loop" parent="layout/Content/entries" instance=ExtResource("3_cteya")]
+[node name="buttons" type="HBoxContainer" parent="layout/Content/entries/samplerate"]
 layout_mode = 2
-optname = "Enable Loop"
-state = true
 
-[node name="loopstart" parent="layout/Content/entries" instance=ExtResource("3_7kvot")]
+[node name="option_on" type="CheckButton" parent="layout/Content/entries/samplerate/buttons"]
 layout_mode = 2
-optname = "Loop Start"
+size_flags_horizontal = 8
 
-[node name="loopend" parent="layout/Content/entries" instance=ExtResource("3_7kvot")]
+[node name="option_text" type="LineEdit" parent="layout/Content/entries/samplerate/buttons"]
+custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
-optname = "Loop End"
+size_flags_horizontal = 10
+alignment = 2
+expand_to_text_length = true
 
-[node name="channelcount" parent="layout/Content/entries" instance=ExtResource("2_kv44q")]
+[node name="resamplerate" type="HBoxContainer" parent="layout/Content/entries"]
 layout_mode = 2
-optname = "Custom Channel Count"
 
-[node name="mutescale" parent="layout/Content/entries" instance=ExtResource("3_7kvot")]
+[node name="option_name" type="Label" parent="layout/Content/entries/resamplerate"]
 layout_mode = 2
-optname = "Mute Scale"
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "Custom Resample Rate"
 
-[node name="mastervolume" parent="layout/Content/entries" instance=ExtResource("3_7kvot")]
+[node name="buttons" type="HBoxContainer" parent="layout/Content/entries/resamplerate"]
 layout_mode = 2
-optname = "Master Volume"
 
-[node name="mixmono" parent="layout/Content/entries" instance=ExtResource("3_cteya")]
+[node name="option_on" type="CheckButton" parent="layout/Content/entries/resamplerate/buttons"]
 layout_mode = 2
-optname = "Mix File to Mono"
+size_flags_horizontal = 8
 
-[node name="skipstream" parent="layout/Content/entries" instance=ExtResource("3_cteya")]
+[node name="option_text" type="LineEdit" parent="layout/Content/entries/resamplerate/buttons"]
+custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
-optname = "Skip generating Stream Files"
+size_flags_horizontal = 10
+alignment = 2
+expand_to_text_length = true
 
-[node name="skipseq" parent="layout/Content/entries" instance=ExtResource("3_cteya")]
+[node name="enable_loop" type="HBoxContainer" parent="layout/Content/entries"]
 layout_mode = 2
-optname = "Skip Generating Sequence File"
+tooltip_text = "does this thing work"
 
-[node name="skipbnk" parent="layout/Content/entries" instance=ExtResource("3_cteya")]
+[node name="option_name" type="Label" parent="layout/Content/entries/enable_loop"]
 layout_mode = 2
-optname = "Skip Generating Soundbank File"
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "Enable Loop"
+
+[node name="option_state" type="CheckButton" parent="layout/Content/entries/enable_loop"]
+layout_mode = 2
+size_flags_horizontal = 8
+tooltip_text = "placeholder
+"
+
+[node name="loopbutton" type="Button" parent="layout/Content/entries/enable_loop"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Set Loop Options..."
+
+[node name="loopstart" type="HBoxContainer" parent="layout/Content/entries"]
+visible = false
+layout_mode = 2
+
+[node name="option_name" type="Label" parent="layout/Content/entries/loopstart"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "Loop Start"
+
+[node name="option_text" type="LineEdit" parent="layout/Content/entries/loopstart"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+size_flags_horizontal = 10
+alignment = 2
+expand_to_text_length = true
+
+[node name="loopend" type="HBoxContainer" parent="layout/Content/entries"]
+visible = false
+layout_mode = 2
+
+[node name="option_name" type="Label" parent="layout/Content/entries/loopend"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "Loop End"
+
+[node name="option_text" type="LineEdit" parent="layout/Content/entries/loopend"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+size_flags_horizontal = 10
+alignment = 2
+expand_to_text_length = true
+
+[node name="channelcount" type="HBoxContainer" parent="layout/Content/entries"]
+layout_mode = 2
+
+[node name="option_name" type="Label" parent="layout/Content/entries/channelcount"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "Custom Channel Count"
+
+[node name="buttons" type="HBoxContainer" parent="layout/Content/entries/channelcount"]
+layout_mode = 2
+
+[node name="option_on" type="CheckButton" parent="layout/Content/entries/channelcount/buttons"]
+layout_mode = 2
+size_flags_horizontal = 8
+
+[node name="option_text" type="LineEdit" parent="layout/Content/entries/channelcount/buttons"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+size_flags_horizontal = 10
+alignment = 2
+expand_to_text_length = true
+
+[node name="mutescale" type="HBoxContainer" parent="layout/Content/entries"]
+layout_mode = 2
+
+[node name="option_name" type="Label" parent="layout/Content/entries/mutescale"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "Mute Scale"
+
+[node name="option_text" type="LineEdit" parent="layout/Content/entries/mutescale"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+size_flags_horizontal = 10
+alignment = 2
+expand_to_text_length = true
+
+[node name="mastervolume" type="HBoxContainer" parent="layout/Content/entries"]
+layout_mode = 2
+
+[node name="option_name" type="Label" parent="layout/Content/entries/mastervolume"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "Master Volume"
+
+[node name="option_text" type="LineEdit" parent="layout/Content/entries/mastervolume"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+size_flags_horizontal = 10
+alignment = 2
+expand_to_text_length = true
+
+[node name="mixmono" type="HBoxContainer" parent="layout/Content/entries"]
+layout_mode = 2
+tooltip_text = "does this thing work"
+
+[node name="option_name" type="Label" parent="layout/Content/entries/mixmono"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "Mix Down to Mono"
+
+[node name="option_state" type="CheckButton" parent="layout/Content/entries/mixmono"]
+layout_mode = 2
+size_flags_horizontal = 10
+tooltip_text = "placeholder
+"
+
+[node name="skipstream" type="HBoxContainer" parent="layout/Content/entries"]
+layout_mode = 2
+tooltip_text = "does this thing work"
+
+[node name="option_name" type="Label" parent="layout/Content/entries/skipstream"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "Skip Stream Output"
+
+[node name="option_state" type="CheckButton" parent="layout/Content/entries/skipstream"]
+layout_mode = 2
+size_flags_horizontal = 10
+tooltip_text = "placeholder
+"
+
+[node name="skipseq" type="HBoxContainer" parent="layout/Content/entries"]
+layout_mode = 2
+tooltip_text = "does this thing work"
+
+[node name="option_name" type="Label" parent="layout/Content/entries/skipseq"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "Skip Sequence Output"
+
+[node name="option_state" type="CheckButton" parent="layout/Content/entries/skipseq"]
+layout_mode = 2
+size_flags_horizontal = 10
+tooltip_text = "placeholder
+"
+
+[node name="skipbnk" type="HBoxContainer" parent="layout/Content/entries"]
+layout_mode = 2
+tooltip_text = "does this thing work"
+
+[node name="option_name" type="Label" parent="layout/Content/entries/skipbnk"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "Skip Soundbank Output"
+
+[node name="option_state" type="CheckButton" parent="layout/Content/entries/skipbnk"]
+layout_mode = 2
+size_flags_horizontal = 10
+tooltip_text = "placeholder
+"
+
+[node name="audio_wave" type="MarginContainer" parent="layout/Content/entries"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="layout/Content/entries/audio_wave"]
+layout_mode = 2
+
+[node name="waveform" type="TextureRect" parent="layout/Content/entries/audio_wave/VBoxContainer"]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+size_flags_vertical = 3
+texture = SubResource("CanvasTexture_44luu")
+script = ExtResource("2_4t313")
 
 [node name="BottomBar" type="HBoxContainer" parent="layout"]
 custom_minimum_size = Vector2(0, 36)
@@ -154,18 +338,17 @@ layout_mode = 2
 size_flags_vertical = 10
 alignment = 2
 
+[node name="PreviewButton" type="Button" parent="layout/BottomBar"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Preview"
+
 [node name="ExportButton" type="Button" parent="layout/BottomBar"]
 layout_mode = 2
-size_flags_horizontal = 6
+size_flags_horizontal = 3
 text = "Export"
 
-[connection signal="tree_entered" from="layout/Content/entries/inputfile/epiclabel" to="layout/Content/entries/inputfile" method="_on_epiclabel_tree_entered"]
-[connection signal="pressed" from="layout/Content/entries/inputfile/pickfile" to="layout/Content/entries/inputfile" method="_on_pickfile_pressed"]
-[connection signal="file_selected" from="layout/Content/entries/inputfile/diag" to="layout/Content/entries/inputfile" method="_on_diag_file_selected"]
-[connection signal="tree_entered" from="layout/Content/entries/outputfile/epiclabel" to="layout/Content/entries/outputfile" method="_on_epiclabel_tree_entered"]
-[connection signal="toggled" from="layout/Content/entries/outputfile/onoff" to="layout/Content/entries/outputfile" method="_on_onoff_toggled"]
-[connection signal="pressed" from="layout/Content/entries/outputfile/pickfile" to="layout/Content/entries/outputfile" method="_on_pickfile_pressed"]
-[connection signal="text_changed" from="layout/Content/entries/outputfile/soundname" to="layout/Content/entries/outputfile" method="_on_soundname_text_changed"]
-[connection signal="dir_selected" from="layout/Content/entries/outputfile/diag" to="layout/Content/entries/outputfile" method="_on_diag_dir_selected"]
-[connection signal="file_selected" from="layout/Content/entries/outputfile/diag" to="layout/Content/entries/outputfile" method="_on_diag_file_selected"]
+[connection signal="file_selected" from="layout/file_dialog" to="." method="_on_file_dialog_file_selected"]
+[connection signal="pressed" from="layout/Content/entries/inputfile/pickfile" to="." method="_on_pick_input_file_pressed"]
+[connection signal="gui_input" from="layout/Content/entries/audio_wave/VBoxContainer/waveform" to="layout/Content/entries/audio_wave/VBoxContainer/waveform" method="_on_gui_input"]
 [connection signal="pressed" from="layout/BottomBar/ExportButton" to="." method="_on_export_button_pressed"]

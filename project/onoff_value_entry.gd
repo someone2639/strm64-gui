@@ -18,4 +18,5 @@ func _on_option_on_tree_entered():
 func _on_option_on_toggled(toggled_on):
 	var toEdit = get_node("buttons/option_text") as LineEdit
 	toEdit.editable = toggled_on
+	state = toggled_on
 

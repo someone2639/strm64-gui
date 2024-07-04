@@ -37,6 +37,8 @@ class STRM64 : public RefCounted
 private:
     string filename; // input
     string newFilename; // output
+    // PackedInt32Array waveform_l;
+    // PackedInt32Array waveform_r;
 
 protected:
     static void _bind_methods();
@@ -48,13 +50,23 @@ public:
     void run();
 
     void set_filename(String p_filename);
-
     void set_output(String p_output);
+
+    void set__sample_rate(const int64_t p_rate);
+    void set__resample_rate(const int64_t p_rate);
+    void set_loop(bool b);
+    // loop start (TODO: epic gui)
+    // loop end (TODO: epic gui)
+    void set_custom_channel_count(const int64_t p_count);
+    void set_mute_scale(const int64_t p_vol);
+    void set_master_volume(const int64_t p_vol);
 
     void set_mono(bool b);
     void set_stream(bool b);
     void set_seq(bool b);
     void set_bank(bool b);
+
+    Array get_waveform();
 
     void generate_filename();
 };
